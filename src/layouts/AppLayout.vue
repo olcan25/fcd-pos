@@ -1,28 +1,50 @@
 <template>
-  <component :is="layout">
-    <slot />
-  </component>
+  <component :is="layout"> <router-view /> </component>
 </template>
-
+`
 <script setup>
-import { markRaw, ref, watch, defineAsyncComponent } from 'vue'
+import AppLayoutDefault from './AppLayoutDefault.vue'
+import AppLayoutBlank from './AppLayoutBlank.vue'
+import { markRaw, watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
-const AppLayoutDefault = defineAsyncComponent(() => import('./AppLayoutDefault.vue'))
 
-const layout = ref()
 const route = useRoute()
+const layout = ref()
+
+// watch with switch case
 watch(
   () => route.meta?.layout,
-  async (value) => {
+  async (metaLayout) => {
     try {
-      console.log('try', value)
-      const component = value && (await import(/* @vite-ignore */ `./${value}.vue`))
-      layout.value = markRaw(component?.default || AppLayoutDefault)
+      let component = AppLayoutDefault
+      switch (metaLayout) {
+        case 'AppLayoutBlank':
+          component = AppLayoutBlank
+          break
+        default:
+          break
+      }
+      layout.value = markRaw(component)
     } catch (e) {
-      console.log('catch', e,value)
+      console.error(e)
       layout.value = markRaw(AppLayoutDefault)
     }
   },
   { immediate: true }
 )
+
+// watch(
+//   () => route.meta?.layout,
+//   async (metaLayout) => {
+//     try {
+//       const component = metaLayout && (await import(/* @vite-ignore */ `./${metaLayout}.vue`))
+//       layout.value = markRaw(component?.default || AppLayoutDefault)
+//     } catch (e) {
+//       console.error(e)
+//       layout.value = markRaw(AppLayoutDefault)
+//     }
+//   },
+//   { immediate: true }
+// )
 </script>
+`

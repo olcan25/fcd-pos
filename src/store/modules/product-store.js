@@ -12,6 +12,8 @@ export const useProductStore = defineStore('product-store', () => {
   const productRef = collection(db, 'products')
 
   //States
+  const loading = ref(false)
+  const error = ref(null)
   const products = ref([])
   const product = ref({})
 
@@ -38,13 +40,16 @@ export const useProductStore = defineStore('product-store', () => {
 
   const getProducts = async () => {
     try {
-      const querySnapshot = await getDocs(productRef)
       products.value = []
+      loading.value = true
+      const querySnapshot = await getDocs(productRef)
       querySnapshot.forEach((doc) => {
         products.value.push({ id: doc.id, ...doc.data() })
       })
+      loading.value = false
     } catch (error) {
       console.error('Belgeler edinirken hata oluştu: ', error)
+      error.value = error
     }
   }
 
@@ -101,6 +106,8 @@ export const useProductStore = defineStore('product-store', () => {
   return {
     products,
     product,
+    loading,
+    error,
     selectProducts,
     autoCompleteProducts,
     getProducts,

@@ -3,18 +3,31 @@
     <DataTable
       v-model:expandedRows="expandedRows"
       :value="partners"
+      v-model:filters="filters"
+      :globalFilterFields="['name', 'tradeName', 'uidNumber', 'vatNumber', 'address', 'city', 'country']"
+      dataKey="id"
+      paginator
+      :rows="10"
+      :rowsPerPageOptions="[5, 10, 20, 50, 100,partners.length]"
+      paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+      currentPageReportTemplate="{first} to {last} of {totalRecords}"
       @rowExpand="onRowExpand"
       @rowCollapse="onRowCollapse"
     >
       <template #header>
-        <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-          <span class="text-xl text-900 font-bold">Partnerler Tablosu</span>
-          <router-link
-            :to="{ name: 'create-partner' }"
-            class="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-          >
-            Ekle
-          </router-link>
+        <div class="flex flex-wrap align-items-center justify-between gap-2">
+          <div>
+            <span class="text-xl text-900 font-bold">Partnerler Tablosu</span>
+            <router-link
+              :to="{ name: 'create-partner' }"
+              class="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            >
+              Ekle
+            </router-link>
+          </div>
+          <div>
+            <InputText v-model="filters['global'].value" placeholder="Ara" />
+          </div>
         </div>
       </template>
       <Column expander style="width: 5rem" />
@@ -73,8 +86,13 @@ import { storeToRefs } from 'pinia'
 
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+import InputText from 'primevue/inputtext'
+import { FilterMatchMode } from 'primevue/api'
 
 const expandedRows = ref([])
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+})
 
 import { usePartnerStore } from '@/store/modules/partner-store'
 

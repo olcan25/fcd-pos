@@ -5,11 +5,7 @@
         href="#"
         class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
       >
-        <img
-          class="w-8 h-8 mr-2"
-          src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-          alt="logo"
-        />
+        <img class="w-8 h-8 mr-2" :src="imgUrl" alt="logo" />
         FCD Accounting
       </a>
       <div
@@ -25,27 +21,6 @@
             <EmailField fieldName="email" fieldLabel="Email" fieldPlaceholder="olcan29@gmail.com" />
             <PasswordField fieldName="password" fieldLabel="Password" />
             <div class="flex items-center justify-between">
-              <!-- Remmeber Me
-                 <div class="flex items-start">
-                <div class="flex items-center h-5">
-                  <input
-                    id="remember"
-                    aria-describedby="remember"
-                    type="checkbox"
-                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                    required=""
-                  />
-                </div>
-                <div class="ml-3 text-sm">
-                  <label for="remember" class="text-gray-500 dark:text-gray-300">Remember me</label>
-                </div>
-              </div> -->
-              <!-- Sifremi unuttum -->
-              <!-- <RouterLink
-                href="#"
-                class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >Sifremi unuttum?
-              </RouterLink> -->
             </div>
             <button
               type="submit"
@@ -54,7 +29,6 @@
               Giris
             </button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-              <!-- Don’t have an account yet? -->
               Zeten hesabınız yok mu?
               <router-link
                 to="/register"
@@ -77,6 +51,8 @@ import EmailField from '@/components/forms/EmailField.vue'
 import PasswordField from '@/components/forms/PasswordField.vue'
 
 const userStore = useUserStore()
+
+const imgUrl = new URL('../../assets/logo.jpg', import.meta.url).href
 
 const { handleSubmit } = useForm({ initialValues: { email: '', password: '' } })
 

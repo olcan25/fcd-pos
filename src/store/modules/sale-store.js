@@ -2,7 +2,17 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import { collection, addDoc, getDocs, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  where,
+  query
+} from 'firebase/firestore'
 import { db } from '@/utils/firebase'
 import { usePartnerStore } from './partner-store'
 
@@ -16,6 +26,7 @@ export const useSaleStore = defineStore('sale-store', () => {
   //States
   const sales = ref([])
   const sale = ref({})
+  const salesByPartner = ref([])
 
   //Getters
 
@@ -47,6 +58,8 @@ export const useSaleStore = defineStore('sale-store', () => {
     )
   })
 
+
+
   //Actions
   const getSales = async () => {
     try {
@@ -54,6 +67,19 @@ export const useSaleStore = defineStore('sale-store', () => {
       sales.value = []
       querySnapshot.forEach((doc) => {
         sales.value.push({ id: doc.id, ...doc.data() })
+      })
+    } catch (error) {
+      console.error('Belgeler edinirken hata oluştu: ', error)
+    }
+  }
+
+  const getSalesByPartnerId = async (partnerId) => {
+    salesByPartner.value = []
+    try {
+      const querySnapshot = await query(saleRef, where('partnerId', '==', partnerId))
+      const data = await getDocs(querySnapshot)
+      data.forEach((doc) => {
+        salesByPartner.value.push({ id: doc.id, ...doc.data() })
       })
     } catch (error) {
       console.error('Belgeler edinirken hata oluştu: ', error)
@@ -110,10 +136,12 @@ export const useSaleStore = defineStore('sale-store', () => {
 
   return {
     sales,
+    salesByPartner,
     sale,
     tableSales,
     saleTotalAmounts,
     getSales,
+    getSalesByPartnerId,
     getSale,
     createSale,
     deleteSale,

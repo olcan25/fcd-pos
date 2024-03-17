@@ -19,7 +19,6 @@ import DateField from '@/components/forms/DateField.vue'
 import TextareaField from '@/components/forms/TextareaField.vue'
 import CheckboxField from '@/components/forms/CheckboxField.vue'
 import VSelectField from '@/components/forms/VSelectField.vue'
-// import Multiselect from '@vueform/multiselect'
 
 const partnerStore = usePartnerStore()
 const { autoCompletePartners } = storeToRefs(partnerStore)

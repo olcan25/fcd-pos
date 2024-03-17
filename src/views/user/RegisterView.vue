@@ -5,11 +5,7 @@
         href="#"
         class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
       >
-        <img
-          class="w-8 h-8 mr-2"
-          src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-          alt="logo"
-        />
+        <img class="w-8 h-8 mr-2" :src="imgUrl" alt="logo" />
         FCD Accounting LLC
       </a>
       <div
@@ -76,6 +72,8 @@ import EmailField from '@/components/forms/EmailField.vue'
 import PasswordField from '@/components/forms/PasswordField.vue'
 
 const userStore = useUserStore()
+
+const imgUrl = new URL('../../assets/logo.jpg', import.meta.url).href
 
 const { handleSubmit } = useForm({
   initialValues: { name: '', email: '', password: '', passwordConfirmation: '' }

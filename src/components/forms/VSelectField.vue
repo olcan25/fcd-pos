@@ -3,6 +3,9 @@
   <div>
     <label v-if="fieldLabel" :for="fieldName" class="label-secondary">{{ fieldLabel }}</label>
     <Multiselect :options="data" v-model="value" :searchable="true" />
+    <p v-if="errorMessage" class="mt-2 text-sm text-red-600 dark:text-red-500">
+      <span class="font-medium">Of, hata!</span> {{ errorMessage }}.
+    </p>
   </div>
 </template>
 
@@ -28,7 +31,7 @@ const props = defineProps({
 
 const { fieldName } = toRefs(props)
 
-const { value } = useField(fieldName.value)
+const { value ,errorMessage } = useField(fieldName.value)
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>

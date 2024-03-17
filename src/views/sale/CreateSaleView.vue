@@ -38,7 +38,7 @@ const { handleSubmit } = useForm({
   validationSchema: toTypedSchema(saleValidation),
   initialValues: {
     date: new Date().toISOString().slice(0, 10),
-    partnerId: '',
+    partnerId: null,
     dueDate: null,
     isPaid: false,
     note: '',
